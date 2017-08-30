@@ -44,11 +44,11 @@ contract Crowdsale is SafeMath {
 	/* tokens will be transfered from this address */
 	address public beneficiary;
 	/* if the funding goal is not reached, investors may withdraw their funds */
-	uint public fundingGoal = 672000000000;
+	uint constant public fundingGoal = 672000000000;
 	/* when the soft cap is reached, the price for monetha tokens will rise */
-	uint public softCap = 6720000000000;
+	uint constant public softCap = 6720000000000;
 	/* the maximum amount of tokens to be sold */
-	uint public maxGoal = 20120000000000;
+	uint constant public maxGoal = 20120000000000;
 	/* how much has been raised by crowdale (in ETH) */
 	uint public amountRaised;
 	/* the start date of the crowdsale */
@@ -60,9 +60,10 @@ contract Crowdsale is SafeMath {
 	/* the number of tokens already sold */
 	uint public tokensSold = 0;
 	/* the rates before and after the soft cap is reached */
-	uint[2] public rates = [24, 20];
+	uint constant public rateSoft = 24;
+	uint constant public rateHard = 20;
 
-	uint public rateCoefficient = 100000000000;
+	uint constant public rateCoefficient = 100000000000;
 	/* the address of the token contract */
 	token public tokenReward;
 	/* the balances (in ETH) of all investors */
@@ -128,19 +129,19 @@ contract Crowdsale is SafeMath {
 	
 	function getNumTokens(uint _value) constant returns(uint numTokens, bool reachedSoftCap) {
 		if (tokensSold < softCap) {
-			numTokens = safeMul(_value,rates[0])/rateCoefficient;
+			numTokens = safeMul(_value,rateSoft)/rateCoefficient;
 			if (safeAdd(tokensSold,numTokens) < softCap) 
 				return (numTokens, false);
 			else if (safeAdd(tokensSold,numTokens) == softCap) 
 				return (numTokens, true);
 			else{
 				numTokens = safeSub(softCap, tokensSold);
-				uint missing = safeSub(_value, safeMul(numTokens,rateCoefficient)/rates[0]);
-				return (safeAdd(numTokens, safeMul(missing,rates[1])/rateCoefficient), true);
+				uint missing = safeSub(_value, safeMul(numTokens,rateCoefficient)/rateSoft);
+				return (safeAdd(numTokens, safeMul(missing,rateHard)/rateCoefficient), true);
 			}
 		} 
 		else 
-			return (safeMul(_value,rates[1])/rateCoefficient, false);
+			return (safeMul(_value,rateHard)/rateCoefficient, false);
 	}
 
 	modifier afterDeadline() {
