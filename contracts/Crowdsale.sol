@@ -145,8 +145,8 @@ contract Crowdsale is SafeMath {
 	}
 
 	modifier afterDeadline() {
-		if (now > end) 
-			_;
+		require(now > end);
+		_;
 	}
 
 	/* checks if the goal or time limit has been reached and ends the campaign */
