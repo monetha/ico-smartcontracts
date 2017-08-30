@@ -108,20 +108,31 @@ contract MonethaToken is SafeMath {
 		return true;
 	}
 
+	modifier onlyOwner() {
+		require(msg.sender == owner);
+		_;
+	}
+
+	modifier onlyICO() {
+		require(msg.sender == ico);
+		_;
+	}
+
 
 	/* to be called when ICO is closed. burns the remaining tokens except the company share (60360000), the tokens reserved
 	 *  for the bounty/advisors/marketing program (48288000), for the loyalty program (52312000) and for future financing of the company (40240000).
 	 *  anybody may burn the tokens after ICO ended, but only once (in case the owner holds more tokens in the future).
 	 *  this ensures that the owner will not posses a majority of the tokens. */
-	function burn() {
+	function burn() onlyICO {
+		require(!burned);
+
 		//if tokens have not been burned already and the ICO ended
-		if (!burned && now > startTime) {
-			uint difference = safeSub(balanceOf[owner], reservedAmount);
-			balanceOf[owner] = reservedAmount;
-			totalSupply = safeSub(totalSupply, difference);
-			burned = true;
-			Burned(difference);
-		}
+		uint difference = safeSub(balanceOf[owner], reservedAmount);
+		balanceOf[owner] = reservedAmount;
+		totalSupply = safeSub(totalSupply, difference);
+
+		burned = true;
+		Burned(difference);
 	}
 	
 	/**
@@ -129,8 +140,8 @@ contract MonethaToken is SafeMath {
 	* @param _icoAddress the address of the ico contract
 	* value the max amount of tokens to sell during the ICO
 	**/
-	function setICO(address _icoAddress) {
-		require(msg.sender == owner);
+	function setICO(address _icoAddress) onlyOwner {
+		require(ico == 0x0 && _icoAddress != 0x0);
 		ico = _icoAddress;
 		assert(_approve(ico, tokensForIco));
 	}
@@ -140,8 +151,8 @@ contract MonethaToken is SafeMath {
 	* (In case the soft cap has been reached)
 	* @param _newStart the new start date
 	**/
-	function setStart(uint _newStart) {
-		require(msg.sender == ico && _newStart < startTime);
+	function setStart(uint _newStart) onlyICO {
+		require(_newStart < startTime);
 		startTime = _newStart;
 	}
 

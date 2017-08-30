@@ -151,8 +151,8 @@ contract Crowdsale is SafeMath {
 
 	/* checks if the goal or time limit has been reached and ends the campaign */
 	function checkGoalReached() afterDeadline {
+		tokenReward.burn(); //burn remaining tokens but the reserved ones
 		if (tokensSold >= fundingGoal) {
-			tokenReward.burn(); //burn remaining tokens but the reserved ones
 			GoalReached(beneficiary, amountRaised);
 		}
 		crowdsaleClosed = true;
