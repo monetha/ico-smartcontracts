@@ -42,7 +42,7 @@ contract SafeMath {
 
 contract Crowdsale is SafeMath {
 	/* tokens will be transfered from this address */
-	address public beneficiary;
+	address public tokenOwner;
 	/* if the funding goal is not reached, investors may withdraw their funds */
 	uint constant public fundingGoal = 672000000000;
 	/* when the soft cap is reached, the price for monetha tokens will rise */
@@ -73,7 +73,7 @@ contract Crowdsale is SafeMath {
 	/* the wallet on which the funds will be stored */
 	address msWallet;
 	/* notifying transfers and the success of the crowdsale*/
-	event GoalReached(address _beneficiary, uint _amountRaised);
+	event GoalReached(address _tokenOwner, uint _amountRaised);
 	event FundTransfer(address backer, uint amount, bool isContribution, uint _amountRaised);
 
 
@@ -88,7 +88,7 @@ contract Crowdsale is SafeMath {
 		uint _timeAfterSoftCap) {
 		tokenReward = token(_tokenAddr);
 		msWallet = _walletAddr;
-		beneficiary = _tokenOwner;
+		tokenOwner = _tokenOwner;
 
 		require(_start < _end);
 		start = _start;
@@ -116,7 +116,7 @@ contract Crowdsale is SafeMath {
 		balanceOf[_receiver] = safeAdd(balanceOf[_receiver], amount);
 		amountRaised = safeAdd(amountRaised, amount);
 		tokensSold += numTokens;
-		assert(tokenReward.transferFrom(beneficiary, _receiver, numTokens));
+		assert(tokenReward.transferFrom(tokenOwner, _receiver, numTokens));
 		FundTransfer(_receiver, amount, true, amountRaised);
 		if (reachedSoftCap) {
 			uint newEnd = now + timeAfterSoftCap;
@@ -134,7 +134,7 @@ contract Crowdsale is SafeMath {
 				return (numTokens, false);
 			else if (safeAdd(tokensSold,numTokens) == softCap) 
 				return (numTokens, true);
-			else{
+			else {
 				numTokens = safeSub(softCap, tokensSold);
 				uint missing = safeSub(_value, safeMul(numTokens,rateCoefficient)/rateSoft);
 				return (safeAdd(numTokens, safeMul(missing,rateHard)/rateCoefficient), true);
@@ -151,9 +151,11 @@ contract Crowdsale is SafeMath {
 
 	/* checks if the goal or time limit has been reached and ends the campaign */
 	function checkGoalReached() afterDeadline {
+		require(msg.sender == tokenOwner);
+
 		if (tokensSold >= fundingGoal) {
 			tokenReward.burn(); //burn remaining tokens but the reserved ones
-			GoalReached(beneficiary, amountRaised);
+			GoalReached(tokenOwner, amountRaised);
 		}
 		crowdsaleClosed = true;
 	}
