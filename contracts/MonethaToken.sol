@@ -143,6 +143,7 @@ contract MonethaToken is SafeMath {
 	function setStart(uint _newStart) {
 		require(msg.sender == ico && _newStart < startTime);
 		startTime = _newStart;
+		lockReleaseDate = startTime + 1 years;
 	}
 
 }
