@@ -140,7 +140,14 @@ contract('ICO', accounts => {
   });
 
   it("should fail to close crowdsale because too early", async() => {
-    await icoInstance.checkGoalReached();
+    let success = true;
+    try {
+      await icoInstance.checkGoalReached();
+      success = false;
+    } catch (error) {}
+    if (!success) {
+      throw new Error('Crowdsale was closed too early');
+    }
     let reached = await icoInstance.crowdsaleClosed.call();
     assert.equal(reached, false);
   });
@@ -177,4 +184,3 @@ contract('ICO', accounts => {
   });
 
 });
-
