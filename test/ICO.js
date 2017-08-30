@@ -140,7 +140,7 @@ contract('ICO', accounts => {
   });
 
   it("should fail to close crowdsale because too early", async() => {
-    await icoInstance.checkGoalReached();
+    await icoInstance.checkGoalReached({from: owner});
     let reached = await icoInstance.crowdsaleClosed.call();
     assert.equal(reached, false);
   });
@@ -148,9 +148,9 @@ contract('ICO', accounts => {
   it("should close the crowdsale. goal should be reached. Should burn unsold tokens.", async() => {
     let startTime = await tokenInstance.startTime();
     utils.increaseTime(startTime.toNumber() - web3.eth.getBlock(web3.eth.blockNumber).timestamp + 1)
-    let result = await icoInstance.checkGoalReached();
+    let result = await icoInstance.checkGoalReached({from: owner});
     let event = result.logs[0].args;
-    assert.equal(event._beneficiary, accounts[0]);
+    assert.equal(event._tokenOwner, accounts[0]);
     assert.equal(event._amountRaised.toNumber(), web3.toWei(42010, "ether"));
     let closed = await icoInstance.crowdsaleClosed.call();
     assert.equal(closed, true);
