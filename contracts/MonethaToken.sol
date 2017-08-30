@@ -32,14 +32,14 @@ contract SafeMath {
 
 contract MonethaToken is SafeMath {
 	/* Public variables of the token */
-	string public standard = "ERC20";
-	string public name = "MONETHA";
-	string public symbol = "MTH";
-	uint8 public decimals = 5;
+	string constant public standard = "ERC20";
+	string constant public name = "MONETHA";
+	string constant public symbol = "MTH";
+	uint8 constant public decimals = 5;
 	uint public totalSupply = 40240000000000;
-	uint public tokensForIco = 20120000000000;
-	uint public reservedAmount = 20120000000000;
-	uint public lockedAmount = 15291200000000;
+	uint constant public tokensForIco = 20120000000000;
+	uint constant public reservedAmount = 20120000000000;
+	uint constant public lockedAmount = 15291200000000;
 	address public owner;
 	address public ico;
 	/* from this time on tokens may be transfered (after ICO)*/
