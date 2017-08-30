@@ -124,14 +124,15 @@ contract MonethaToken is SafeMath {
 	 *  anybody may burn the tokens after ICO ended, but only once (in case the owner holds more tokens in the future).
 	 *  this ensures that the owner will not posses a majority of the tokens. */
 	function burn() onlyICO {
+		require(!burned);
+
 		//if tokens have not been burned already and the ICO ended
-		if (!burned && now > startTime) {
-			uint difference = safeSub(balanceOf[owner], reservedAmount);
-			balanceOf[owner] = reservedAmount;
-			totalSupply = safeSub(totalSupply, difference);
-			burned = true;
-			Burned(difference);
-		}
+		uint difference = safeSub(balanceOf[owner], reservedAmount);
+		balanceOf[owner] = reservedAmount;
+		totalSupply = safeSub(totalSupply, difference);
+
+		burned = true;
+		Burned(difference);
 	}
 	
 	/**
