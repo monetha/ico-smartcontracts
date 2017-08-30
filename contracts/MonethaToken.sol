@@ -44,7 +44,7 @@ contract MonethaToken is SafeMath {
 	address public ico;
 	/* from this time on tokens may be transfered (after ICO)*/
 	uint public startTime;
-	uint public lockReleaseDate = startTime + 1 years;
+	uint public lockReleaseDate;
 	/* tells if tokens have been burned already */
 	bool burned;
 
@@ -62,6 +62,7 @@ contract MonethaToken is SafeMath {
 	function MonethaToken(address _ownerAddr, uint _startTime) {
 		owner = _ownerAddr;
 		startTime = _startTime;
+		lockReleaseDate = startTime + 1 years;
 		balanceOf[owner] = totalSupply; // Give the owner all initial tokens
 	}
 
