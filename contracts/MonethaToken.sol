@@ -33,7 +33,7 @@ contract SafeMath {
 contract MonethaToken is SafeMath {
 	/* Public variables of the token */
 	string constant public standard = "ERC20";
-	string constant public name = "MONETHA";
+	string constant public name = "Monetha";
 	string constant public symbol = "MTH";
 	uint8 constant public decimals = 5;
 	uint public totalSupply = 40240000000000;
