@@ -101,16 +101,20 @@ contract Crowdsale is SafeMath {
 			invest(msg.sender);
 	}
 
+	modifier crowdsaleOpen() {
+		require(!crowdsaleClosed && now >= start && now <= end);
+		_;
+	}
+
 	/* make an investment
 	 *  only callable if the crowdsale started and hasn't been closed already and the maxGoal wasn't reached yet.
 	 *  the current token price is looked up and the corresponding number of tokens is transfered to the receiver.
 	 *  the sent value is directly forwarded to a safe wallet.
 	 *  this method allows to purchase tokens in behalf of another address.*/
-	function invest(address _receiver) payable {
+	function invest(address _receiver) payable crowdsaleOpen {
 		uint amount = msg.value;
 		var (numTokens, reachedSoftCap) = getNumTokens(amount);
-		require(numTokens>0);
-		require(!crowdsaleClosed && now >= start && now <= end && safeAdd(tokensSold, numTokens) <= maxGoal);
+		require(numTokens > 0 && safeAdd(tokensSold, numTokens) <= maxGoal);
 		msWallet.transfer(amount);
 		balanceOf[_receiver] = safeAdd(balanceOf[_receiver], amount);
 		amountRaised = safeAdd(amountRaised, amount);
