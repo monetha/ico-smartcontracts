@@ -25,6 +25,20 @@ contract('token', accounts => {
     assert.equal(startTime, start);
   });
 
+  it("should fail to change the start time", async() => {
+    try {
+      let result = await instance.setStart(10000);
+      throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+    } catch (error) {
+      let startTime = await instance.startTime();
+      assert.equal(startTime, start);
+    }
+  });
+
+  it("should set an ico address", async() => {
+    await instance.setICO(accounts[0]);
+  });
+
   it("should allow acc1 to spend 10MTH", async() => {
     let result = await instance.approve(accounts[1], 1000000);
     let event = result.logs[0].args;
@@ -149,18 +163,7 @@ contract('token', accounts => {
     }
   });
 
-  it("should fail to change the start time", async() => {
-    try {
-      let result = await instance.setStart(10000);
-      throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
-    } catch (error) {
-      let startTime = await instance.startTime();
-      assert.equal(startTime, start);
-    }
-  });
-
-  it("should set an ico address and change the start time", async() => {
-    await instance.setICO(accounts[0]);
+  it("should change the start time", async() => {
     await instance.setStart(1506770000);
     let startTime = await instance.startTime();
     assert.equal(startTime, 1506770000);
