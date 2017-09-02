@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/truffle test",
-    "lint": "./node_modules/.bin/eslint **/*.js && solium --dir ."
+    "lint": "./node_modules/.bin/solium --dir ."
   },
   "repository": {
     "type": "git",
