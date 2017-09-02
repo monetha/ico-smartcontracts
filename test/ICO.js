@@ -1,7 +1,7 @@
 let utils = require('./utils.js')
-
 let ico = artifacts.require("./Crowdsale.sol");
 let token = artifacts.require("./MonethaToken.sol");
+
 let fundingGoal = 672000000000;
 let softCap = 6720000000000;
 let maxGoal = 20120000000000;
