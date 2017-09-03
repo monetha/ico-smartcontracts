@@ -1,0 +1,34 @@
+{
+  "name": "monetha-smartcontracts",
+  "version": "1.0.0",
+  "description": "Ethereum smartcontracts for Monetha, payment solution for merchants that enables globally trustful commerce.",
+  "main": "",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/truffle test",
+    "lint": "./node_modules/.bin/solium --dir ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monetha/smartcontracts.git"
+  },
+  "keywords": [
+    "ethereum",
+    "truffle"
+  ],
+  "author": "Julia Altenried, Alex Bazhanau",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/monetha/smartcontracts/issues"
+  },
+  "homepage": "https://github.com/monetha/smartcontracts#readme",
+  "dependencies": {
+    "truffle": "^3.4.9",
+    "ethereumjs-testrpc": "^4.0.1"
+  },
+  "devDependencies": {
+    "solium": "^0.5.5"
+  }
+}
