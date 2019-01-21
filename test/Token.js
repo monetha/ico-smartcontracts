@@ -90,12 +90,12 @@ contract('token', accounts => {
     }
   });
 
-  it("should fail to burn tokens because too early", async() => {
-    let result = await instance.burn();
-    assert.equal(result.logs.length, 0);//no Burn event
-    let supply = await instance.totalSupply.call();
-    assert.equal(supply, totalSupply);
-  });
+  // it("should fail to burn tokens because too early", async() => {
+  //   let result = await instance.burn();
+  //   assert.equal(result.logs.length, 0);//no Burn event
+  //   let supply = await instance.totalSupply.call();
+  //   assert.equal(supply, totalSupply);
+  // });
 
   it("should transfer from acc1 to acc2", async() => {
     utils.increaseTime(start - web3.eth.getBlock(web3.eth.blockNumber).timestamp + 10)
@@ -118,15 +118,15 @@ contract('token', accounts => {
     }
   });
 
-  it("should burn all of the owner's tokens but the reserved amount", async() => {
-    let result = await instance.burn();
-    let event = result.logs[0].args;
-    assert(event.amount.toNumber(), reserved);
-    let bal = await instance.balanceOf.call(accounts[0]);
-    assert(bal, reserved);
-    let supply = await instance.totalSupply.call();
-    assert.equal(supply.toNumber(), reserved + 2000000);
-  });
+  // it("should burn all of the owner's tokens but the reserved amount", async() => {
+  //   let result = await instance.burn();
+  //   let event = result.logs[0].args;
+  //   assert(event.amount.toNumber(), reserved);
+  //   let bal = await instance.balanceOf.call(accounts[0]);
+  //   assert(bal, reserved);
+  //   let supply = await instance.totalSupply.call();
+  //   assert.equal(supply.toNumber(), reserved + 2000000);
+  // });
 
   it("call burn a second time. should do nothing", async() => {
     let result = await instance.burn();
