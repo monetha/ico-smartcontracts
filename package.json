@@ -25,8 +25,9 @@
   },
   "homepage": "https://github.com/monetha/smartcontracts#readme",
   "dependencies": {
-    "truffle": "^3.4.9",
-    "ethereumjs-testrpc": "^4.0.1"
+    "ethereumjs-testrpc": "^4.0.1",
+    "ganache-cli": "^6.2.5",
+    "truffle": "^3.4.9"
   },
   "devDependencies": {
     "solium": "^0.5.5"
