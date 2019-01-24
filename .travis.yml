@@ -16,5 +16,7 @@ install:
   - npm install
 
 script:
-  - npm run compile
-  - npm run automate-test
+  - ganache-cli -p 7545 > /dev/null &
+  - sleep 5
+  - truffle migrate 
+  - truffle test
