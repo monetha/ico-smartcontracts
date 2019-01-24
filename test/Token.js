@@ -10,7 +10,6 @@ let reserved = 20120000000000;
 contract("token", accounts => {
   let owner = accounts[0];
   before(async () => {
-    // instance = await token.deployed();
     instance = await token.new(owner, start);
   });
 

@@ -13,7 +13,7 @@ let reserved = 20120000000000;
 let tokenInstance, icoInstance;
 
 contract("ICO", (accounts, key) => {
-  let owner = accounts[0]; //"0x376c9fde9555e9a491c4cd8597ca67bb1bbf397e";
+  let owner = accounts[0];
   before(async () => {
     tokenInstance = await token.new(owner, tokenStartTime);
     icoInstance = await ico.new(
