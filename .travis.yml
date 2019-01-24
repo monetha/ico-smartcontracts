@@ -16,7 +16,7 @@ install:
   - npm install
 
 script:
-  - ganache-cli -p 7545 > /dev/null &
+  - ganache-cli -p 7545 --defaultBalanceEther 20000000000000000000 > /dev/null &
   - sleep 5
   - truffle migrate --network developmenttest
   - truffle test --network developmenttest
