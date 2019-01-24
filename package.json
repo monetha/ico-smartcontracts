@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/truffle test",
+    "test": "truffle test",
+    "automate-test": "test-scripts/test.sh test",
+    "compile": "node_modules/.bin/truffle compile --reset --compile-all",
     "lint": "./node_modules/.bin/solium --dir ."
   },
   "repository": {
@@ -25,6 +27,7 @@
   },
   "homepage": "https://github.com/monetha/smartcontracts#readme",
   "dependencies": {
+    "ethereumjs-testrpc": "^4.0.1",
     "ganache-cli": "^6.2.5",
     "truffle": "^3.4.9"
   },
